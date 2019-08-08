@@ -1,4 +1,4 @@
-# Kubernetes Setup
+# Kubernetes
 
 # Network Setup:
 
@@ -7,7 +7,7 @@
 192.168.1.201 application.internal.mydomain.com
 192.168.1.201 dashboard.internal.mydomain.com
 
-
+# Kubernetes Setup
 1. sudo nano /boot/cmdline.txt: Add this text at the end of the line, but don't create any new lines:
 	cgroup_enable=cpuset cgroup_memory=1 cgroup_enable=memory
 2. sudo nano /etc/apt/sources.list.d/kubernetes.list : add line
