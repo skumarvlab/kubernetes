@@ -1,5 +1,13 @@
 # Kubernetes Setup
 
+# Network Setup:
+
+1. Map all domains that will be used for your applications on your computer “hosts” file to nodes: sudo nano /etc/hosts
+
+192.168.1.201 application.internal.mydomain.com
+192.168.1.201 dashboard.internal.mydomain.com
+
+
 1. sudo nano /boot/cmdline.txt: Add this text at the end of the line, but don't create any new lines:
 	cgroup_enable=cpuset cgroup_memory=1 cgroup_enable=memory
 2. sudo nano /etc/apt/sources.list.d/kubernetes.list : add line
@@ -36,15 +44,9 @@
 	1. sudo apt-get insatll git
 	2. git clone https://github.com/skumarvlab/kubernetes
 	3. kubectl apply -f https://raw.githubusercontent.com/google/metallb/v0.7.3/manifests/metallb.yaml
-	4. Update IP and apply: kubectl apply -f ./kubernetes/metallb-conf.yaml
+	4. Update IP and apply: kubectl apply -f ./kubernetes/metallb/metallb-conf.yaml
     kubectl create -f https://raw.githubusercontent.com/skumarvlab/docker/master/kubernetes-dashboard-arm.yaml
 	4. kubectl create serviceaccount dashboard -n default
 	5. kubectl create clusterrolebinding dashboard-admin -n default \
   --clusterrole=cluster-admin \
   --serviceaccount=default:dashboard
-
-	Traefik Setup
-
-	1. kubectl apply -f https://raw.githubusercontent.com/skumarvlab/docker/master/alpine/traefik-k8s.yaml
-	2. kubectl label node pi01 nginx-controller=traefik
-	3. kubectl apply -f https://raw.githubusercontent.com/skumarvlab/docker/master/kubernetes-dashboard-arm-ingress.yaml
