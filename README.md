@@ -3,8 +3,12 @@
 # Network Setup:
 
 1. Map all domains that will be used for your applications on your computer “hosts” file to nodes: sudo nano /etc/hosts
+
 192.168.1.201 application.internal.mydomain.com
+
 192.168.1.201 dashboard.internal.mydomain.com
+192.168.1.201 dashboard.external.mydomain.com
+
 192.168.1.201 traefik.internal.mydomain.com
 192.168.1.201 traefik.external.mydomain.com
 
@@ -44,17 +48,20 @@
 
 	DashBoard Setup
 
-	1. sudo apt-get insatll git
-	2. git clone https://github.com/skumarvlab/kubernetes
-	3. kubectl apply -f https://raw.githubusercontent.com/google/metallb/v0.7.3/manifests/metallb.yaml
-	4. Update IP and apply: kubectl apply -f ./kubernetes/metallb/metallb-conf.yaml
-	5. kubectl apply -f ./kubernetes/traefik/traefik-rbac.yaml
-	6. kubectl apply -f ./kubernetes/traefik/internal/traefik-internal-configmap.yaml
-	7. kubectl apply -f ./kubernetes/traefik/internal/traefik-internal-service.yaml
-	8. kubectl apply -f ./kubernetes/traefik/internal/traefik-internal-deployment.yaml
-	9. kubectl apply -f ./kubernetes/traefik/external/external-traefik-configmap.yaml
-	10.kubectl apply -f ./kubernetes/traefik/external/external-traefik-service.yaml
-    11.kubectl apply -f ./kubernetes/traefik/external/external-traefik-deployment.yaml
+	a. sudo apt-get insatll git
+	b. git clone https://github.com/skumarvlab/kubernetes
+	c. kubectl apply -f https://raw.githubusercontent.com/google/metallb/v0.7.3/manifests/metallb.yaml
+	d. Update IP and apply: kubectl apply -f ./kubernetes/metallb/metallb-conf.yaml
+	e. kubectl apply -f ./kubernetes/traefik/traefik-rbac.yaml
+	f. kubectl apply -f ./kubernetes/traefik/internal/traefik-internal-configmap.yaml
+	g. kubectl apply -f ./kubernetes/traefik/internal/traefik-internal-service.yaml
+	h. kubectl apply -f ./kubernetes/traefik/internal/traefik-internal-deployment.yaml
+	i. kubectl apply -f ./kubernetes/traefik/external/external-traefik-configmap.yaml
+	j. kubectl apply -f ./kubernetes/traefik/external/external-traefik-service.yaml
+	k. kubectl apply -f ./kubernetes/traefik/external/external-traefik-deployment.yaml
+	l. kubectl apply -f ./kubernetes/dashboard/dashboard.yaml
+	m. kubectl apply -f ./kubernetes/dashboard/dashboard-admin-account.yaml
+	n.
 
     kubectl create -f https://raw.githubusercontent.com/skumarvlab/docker/master/kubernetes-dashboard-arm.yaml
 	6. kubectl create serviceaccount dashboard -n default
