@@ -52,7 +52,7 @@
 	b. git clone https://github.com/skumarvlab/kubernetes
 	c. kubectl apply -f https://raw.githubusercontent.com/google/metallb/v0.7.3/manifests/metallb.yaml
 	d. Update IP and apply: kubectl apply -f ./kubernetes/metallb/metallb-conf.yaml
-	e. kubectl apply -f ./kubernetes/traefik/internal/traefik-internal-rbac.yaml
+	e. kubectl apply -f ./kubernetes/traefik/internal/traefik-intrenal-rbac.yaml
 	f. kubectl apply -f ./kubernetes/traefik/internal/traefik-internal-configmap.yaml
 	g. kubectl apply -f ./kubernetes/traefik/internal/traefik-internal-service.yaml
 	h. kubectl apply -f ./kubernetes/traefik/internal/traefik-internal-deployment.yaml
@@ -62,5 +62,5 @@
 	l. kubectl apply -f ./kubernetes/traefik/external/external-traefik-deployment.yaml
 	m. kubectl apply -f ./kubernetes/dashboard/dashboard.yaml
 	n. kubectl apply -f ./kubernetes/dashboard/dashboard-admin-account.yaml
-	o. kubectl apply -f ./kubernetes/dashboard/dashboard-ingress.yaml
+	o. kubectl apply -f ./kubernetes/dashboard/internal-ingress.yaml
 	p. kubectl apply -f ./kubernetes/dashboard/external-ingress.yaml
