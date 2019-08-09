@@ -11,17 +11,17 @@ metadata:
   name: traefik-ingress-controller-external
   namespace: kube-system
   labels:
-    k8s-app: traefik-ingress-lb
+    k8s-app: traefik-ingress-lb-external
 spec:
   replicas: 1
   selector:
     matchLabels:
-      k8s-app: traefik-ingress-lb
+      k8s-app: traefik-ingress-lb-external
   template:
     metadata:
       labels:
-        k8s-app: traefik-ingress-lb
-        name: traefik-ingress-lb
+        k8s-app: traefik-ingress-lb-external
+        name: traefik-ingress-lb-external
     spec:
       serviceAccountName: traefik-ingress-controller-external
       terminationGracePeriodSeconds: 60
@@ -46,7 +46,7 @@ spec:
           httpGet:
             path: /ping
             port: 80
-          initialDelaySeconds: 3
+          initialDelaySeconds: 180
           periodSeconds: 3
           timeoutSeconds: 1
       affinity:
@@ -64,4 +64,4 @@ spec:
       volumes:
       - name: config
         configMap:
-          name: traefik-conf
+          name: traefik-conf-external
