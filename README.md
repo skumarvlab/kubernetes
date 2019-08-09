@@ -61,7 +61,8 @@
 	k. kubectl apply -f ./kubernetes/traefik/external/external-traefik-deployment.yaml
 	l. kubectl apply -f ./kubernetes/dashboard/dashboard.yaml
 	m. kubectl apply -f ./kubernetes/dashboard/dashboard-admin-account.yaml
-	n.
+	n. kubectl apply -f ./kubernetes/dashboard/dashboard-ingress.yaml
+	o. kubectl apply -f ./kubernetes/dashboard/external-ingress.yaml
 
     kubectl create -f https://raw.githubusercontent.com/skumarvlab/docker/master/kubernetes-dashboard-arm.yaml
 	6. kubectl create serviceaccount dashboard -n default
