@@ -28,10 +28,10 @@
 	Master Node Setup
 
 	1. sudo kubeadm init --apiserver-advertise-address=<IPAddress>
-	2. kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
-	3. mkdir -p $HOME/.kube 
-	4. sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config 
-	5. sudo chown $(id -u):$(id -g) $HOME/.kube/config
+	2. mkdir -p $HOME/.kube 
+	3. sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config 
+	4. sudo chown $(id -u):$(id -g) $HOME/.kube/config
+	5. kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
 	6. kubectl taint nodes --all node-role.kubernetes.io/master-
 	
 	To Join nodes
@@ -52,9 +52,9 @@
 	6. kubectl apply -f ./kubernetes/traefik/internal/traefik-internal-configmap.yaml
 	7. kubectl apply -f ./kubernetes/traefik/internal/traefik-internal-service.yaml
 	8. kubectl apply -f ./kubernetes/traefik/internal/traefik-internal-deployment.yaml
-	9. kubectl apply -f ./kubernetes/traefik/external/external-traefik-service.yaml
-	10.
-    
+	9. kubectl apply -f ./kubernetes/traefik/external/external-traefik-configmap.yaml
+	10.kubectl apply -f ./kubernetes/traefik/external/external-traefik-service.yaml
+
     kubectl create -f https://raw.githubusercontent.com/skumarvlab/docker/master/kubernetes-dashboard-arm.yaml
 	6. kubectl create serviceaccount dashboard -n default
 	7. kubectl create clusterrolebinding dashboard-admin -n default \
