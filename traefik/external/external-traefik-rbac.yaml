@@ -2,7 +2,7 @@
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1beta1
 metadata:
-  name: traefik-ingress-controller
+  name: traefik-ingress-controller-external
 rules:
   - apiGroups:
       - ""
@@ -26,12 +26,12 @@ rules:
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1beta1
 metadata:
-  name: traefik-ingress-controller
+  name: traefik-ingress-controller-external
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: traefik-ingress-controller
+  name: traefik-ingress-controller-external
 subjects:
 - kind: ServiceAccount
-  name: traefik-ingress-controller
+  name: traefik-ingress-controller-external
   namespace: kube-system

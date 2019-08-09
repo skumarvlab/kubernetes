@@ -31,12 +31,12 @@
 
 	Master Node Setup
 
-	1. sudo kubeadm init --apiserver-advertise-address=<IPAddress>
-	2. mkdir -p $HOME/.kube 
-	3. sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config 
-	4. sudo chown $(id -u):$(id -g) $HOME/.kube/config
-	5. kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
-	6. kubectl taint nodes --all node-role.kubernetes.io/master-
+	a. sudo kubeadm init --apiserver-advertise-address=<IPAddress>
+	b. mkdir -p $HOME/.kube 
+	c. sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config 
+	d. sudo chown $(id -u):$(id -g) $HOME/.kube/config
+	e. kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
+	f. kubectl taint nodes --all node-role.kubernetes.io/master-
 	
 	To Join nodes
 	
@@ -52,20 +52,15 @@
 	b. git clone https://github.com/skumarvlab/kubernetes
 	c. kubectl apply -f https://raw.githubusercontent.com/google/metallb/v0.7.3/manifests/metallb.yaml
 	d. Update IP and apply: kubectl apply -f ./kubernetes/metallb/metallb-conf.yaml
-	e. kubectl apply -f ./kubernetes/traefik/traefik-rbac.yaml
+	e. kubectl apply -f ./kubernetes/traefik/internal/traefik-internal-rbac.yaml
 	f. kubectl apply -f ./kubernetes/traefik/internal/traefik-internal-configmap.yaml
 	g. kubectl apply -f ./kubernetes/traefik/internal/traefik-internal-service.yaml
 	h. kubectl apply -f ./kubernetes/traefik/internal/traefik-internal-deployment.yaml
-	i. kubectl apply -f ./kubernetes/traefik/external/external-traefik-configmap.yaml
-	j. kubectl apply -f ./kubernetes/traefik/external/external-traefik-service.yaml
-	k. kubectl apply -f ./kubernetes/traefik/external/external-traefik-deployment.yaml
-	l. kubectl apply -f ./kubernetes/dashboard/dashboard.yaml
-	m. kubectl apply -f ./kubernetes/dashboard/dashboard-admin-account.yaml
-	n. kubectl apply -f ./kubernetes/dashboard/dashboard-ingress.yaml
-	o. kubectl apply -f ./kubernetes/dashboard/external-ingress.yaml
-
-    kubectl create -f https://raw.githubusercontent.com/skumarvlab/docker/master/kubernetes-dashboard-arm.yaml
-	6. kubectl create serviceaccount dashboard -n default
-	7. kubectl create clusterrolebinding dashboard-admin -n default \
-  --clusterrole=cluster-admin \
-  --serviceaccount=default:dashboard
+	i. kubectl apply -f ./kubernetes/traefik/external/external-traefik-rbac.yaml
+	j. kubectl apply -f ./kubernetes/traefik/external/external-traefik-configmap.yaml
+	k. kubectl apply -f ./kubernetes/traefik/external/external-traefik-service.yaml
+	l. kubectl apply -f ./kubernetes/traefik/external/external-traefik-deployment.yaml
+	m. kubectl apply -f ./kubernetes/dashboard/dashboard.yaml
+	n. kubectl apply -f ./kubernetes/dashboard/dashboard-admin-account.yaml
+	o. kubectl apply -f ./kubernetes/dashboard/dashboard-ingress.yaml
+	p. kubectl apply -f ./kubernetes/dashboard/external-ingress.yaml
