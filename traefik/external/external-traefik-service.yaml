@@ -32,7 +32,7 @@ metadata:
     traffic-type: internal
 spec:
   rules:
-  - host: traefik-ext.internal.mydomain.com
+  - host: traefik.internal.mydomain.com
     http:
       paths:
       - path: /

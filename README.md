@@ -29,6 +29,7 @@
 	3. mkdir -p $HOME/.kube 
 	4. sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config 
 	5. sudo chown $(id -u):$(id -g) $HOME/.kube/config
+	6. kubectl taint nodes --all node-role.kubernetes.io/master-
 	
 	To Join nodes
 	
