@@ -3,7 +3,6 @@
 # Network Setup:
 
 1. Map all domains that will be used for your applications on your computer “hosts” file to nodes: sudo nano /etc/hosts
-
 192.168.1.201 application.internal.mydomain.com
 192.168.1.201 dashboard.internal.mydomain.com
 
@@ -43,7 +42,7 @@
 
 	1. sudo apt-get insatll git
 	2. git clone https://github.com/skumarvlab/kubernetes
-	3. kubectl apply -f https://raw.githubusercontent.com/google/metallb/v0.7.3/manifests/metallb.yaml
+	3. kubectl apply -f ./kubernetes/metallb/metallb.yaml
 	4. Update IP and apply: kubectl apply -f ./kubernetes/metallb/metallb-conf.yaml
     kubectl create -f https://raw.githubusercontent.com/skumarvlab/docker/master/kubernetes-dashboard-arm.yaml
 	4. kubectl create serviceaccount dashboard -n default
