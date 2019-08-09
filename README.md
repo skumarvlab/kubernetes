@@ -48,6 +48,8 @@
 	6. kubectl apply -f ./kubernetes/traefik/internal/traefik-internal-configmap.yaml
 	7. kubectl apply -f ./kubernetes/traefik/internal/traefik-internal-service.yaml
 	8. kubectl apply -f ./kubernetes/traefik/internal/traefik-internal-deployment.yaml
+	9. kubectl apply -f ./kubernetes/traefik/external/external-traefik-service.yaml
+	10.kubectl apply -f ./kubernetes/traefik/external/external-traefik-statefulset.yaml
     
     kubectl create -f https://raw.githubusercontent.com/skumarvlab/docker/master/kubernetes-dashboard-arm.yaml
 	6. kubectl create serviceaccount dashboard -n default
