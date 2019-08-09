@@ -13,7 +13,7 @@ metadata:
   labels:
     k8s-app: traefik-ingress-lb
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       k8s-app: traefik-ingress-lb
@@ -26,7 +26,7 @@ spec:
       serviceAccountName: traefik-ingress-controller
       terminationGracePeriodSeconds: 60
       containers:
-      - image: skumarvlab/alpine:0.1-traefik-arm
+      - image: traefik:v1.7
         name: traefik-ingress-lb
         volumeMounts:
         - mountPath: /config

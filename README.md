@@ -42,10 +42,15 @@
 
 	1. sudo apt-get insatll git
 	2. git clone https://github.com/skumarvlab/kubernetes
-	3. kubectl apply -f ./kubernetes/metallb/metallb.yaml
+	3. kubectl apply -f https://raw.githubusercontent.com/google/metallb/v0.7.3/manifests/metallb.yaml
 	4. Update IP and apply: kubectl apply -f ./kubernetes/metallb/metallb-conf.yaml
+	5. kubectl apply -f ./kubernetes/traefik/traefik-rbac.yaml
+	6. kubectl apply -f ./kubernetes/traefik/internal/traefik-internal-configmap.yaml
+	7. kubectl apply -f ./kubernetes/traefik/internal/traefik-internal-service.yaml
+	8. kubectl apply -f ./kubernetes/traefik/internal/traefik-internal-deployment.yaml
+    
     kubectl create -f https://raw.githubusercontent.com/skumarvlab/docker/master/kubernetes-dashboard-arm.yaml
-	4. kubectl create serviceaccount dashboard -n default
-	5. kubectl create clusterrolebinding dashboard-admin -n default \
+	6. kubectl create serviceaccount dashboard -n default
+	7. kubectl create clusterrolebinding dashboard-admin -n default \
   --clusterrole=cluster-admin \
   --serviceaccount=default:dashboard
