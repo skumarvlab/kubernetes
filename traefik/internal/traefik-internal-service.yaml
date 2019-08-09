@@ -8,7 +8,7 @@ metadata:
     k8s-app: traefik-ingress-lb
 spec:
   selector:
-    k8s-app: traefik-ingress-lb-internal
+    k8s-app: traefik-ingress-lb
   externalTrafficPolicy: Local
   ports:
     - protocol: TCP
@@ -26,7 +26,7 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: traefik-ingress-lb-internal
+  name: traefik-ingress-lb
   namespace: kube-system
 spec:
   rules:
@@ -35,6 +35,6 @@ spec:
       paths:
       - path: /
         backend:
-          serviceName: traefik-ingress-service-internal
+          serviceName: traefik-ingress-internal
           servicePort: admin
 

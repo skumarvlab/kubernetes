@@ -5,6 +5,9 @@
 1. Map all domains that will be used for your applications on your computer “hosts” file to nodes: sudo nano /etc/hosts
 192.168.1.201 application.internal.mydomain.com
 192.168.1.201 dashboard.internal.mydomain.com
+192.168.1.201 traefik.internal.mydomain.com
+192.168.1.201 traefik.external.mydomain.com
+
 
 # Kubernetes Setup
 1. sudo nano /boot/cmdline.txt: Add this text at the end of the line, but don't create any new lines:
@@ -50,7 +53,7 @@
 	7. kubectl apply -f ./kubernetes/traefik/internal/traefik-internal-service.yaml
 	8. kubectl apply -f ./kubernetes/traefik/internal/traefik-internal-deployment.yaml
 	9. kubectl apply -f ./kubernetes/traefik/external/external-traefik-service.yaml
-	10.kubectl apply -f ./kubernetes/traefik/external/external-traefik-statefulset.yaml
+	10.
     
     kubectl create -f https://raw.githubusercontent.com/skumarvlab/docker/master/kubernetes-dashboard-arm.yaml
 	6. kubectl create serviceaccount dashboard -n default
