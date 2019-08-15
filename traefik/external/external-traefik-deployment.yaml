@@ -59,7 +59,7 @@ spec:
                 - key: k8s-app
                   operator: In
                   values:
-                  - traefik-ingress-lb
+                  - traefik-ingress-lb-external
               topologyKey: kubernetes.io/hostname
       volumes:
       - name: config

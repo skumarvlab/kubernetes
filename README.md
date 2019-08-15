@@ -4,21 +4,21 @@
 
 1. Map all domains that will be used for your applications on your computer “hosts” file to nodes: sudo nano /etc/hosts
 
-192.168.1.201 application.internal.mydomain.com
+192.168.1.225 application.internal.mydomain.com
 
-192.168.1.201 dashboard.internal.mydomain.com
-192.168.1.201 dashboard.external.mydomain.com
+192.168.1.225 dashboard.internal.mydomain.com
+192.168.1.225 dashboard.external.mydomain.com
 
-192.168.1.201 traefik.internal.mydomain.com
-192.168.1.201 traefik.external.mydomain.com
+192.168.1.225 traefik.internal.mydomain.com
+192.168.1.225 traefik.external.mydomain.com
 
 
 # Kubernetes Setup
 1. sudo nano /boot/cmdline.txt: Add this text at the end of the line, but don't create any new lines:
-	cgroup_enable=cpuset cgroup_memory=1 cgroup_enable=memory
+	cgroup_enable=cpuset cgroup_memory=1
 2. sudo nano /etc/apt/sources.list.d/kubernetes.list : add line
 	deb http://apt.kubernetes.io/ kubernetes-xenial main
-3. curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+3. sudo curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
 4. sudo apt-get update
 5. Disable SWAP: 
 	sudo dphys-swapfile swapoff
@@ -48,18 +48,21 @@
 
 	DashBoard Setup
 
-	a. sudo apt-get insatll git
+	a. sudo apt-get install git
 	b. git clone https://github.com/skumarvlab/kubernetes
 	c. kubectl apply -f https://raw.githubusercontent.com/google/metallb/v0.7.3/manifests/metallb.yaml
 	d. Update IP and apply: kubectl apply -f ./kubernetes/metallb/metallb-conf.yaml
+
 	e. kubectl apply -f ./kubernetes/traefik/internal/traefik-intrenal-rbac.yaml
 	f. kubectl apply -f ./kubernetes/traefik/internal/traefik-internal-configmap.yaml
-	g. kubectl apply -f ./kubernetes/traefik/internal/traefik-internal-service.yaml
+	g. Update IP and apply: kubectl apply -f ./kubernetes/traefik/internal/traefik-internal-service.yaml
 	h. kubectl apply -f ./kubernetes/traefik/internal/traefik-internal-deployment.yaml
+
 	i. kubectl apply -f ./kubernetes/traefik/external/external-traefik-rbac.yaml
 	j. kubectl apply -f ./kubernetes/traefik/external/external-traefik-configmap.yaml
-	k. kubectl apply -f ./kubernetes/traefik/external/external-traefik-service.yaml
+	k. Update IP and apply: kubectl apply -f ./kubernetes/traefik/external/external-traefik-service.yaml
 	l. kubectl apply -f ./kubernetes/traefik/external/external-traefik-deployment.yaml
+
 	m. kubectl apply -f ./kubernetes/dashboard/dashboard.yaml
 	n. kubectl apply -f ./kubernetes/dashboard/dashboard-admin-account.yaml
 	o. kubectl apply -f ./kubernetes/dashboard/internal-ingress.yaml
