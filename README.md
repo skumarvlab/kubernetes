@@ -37,9 +37,12 @@
 	d. sudo chown $(id -u):$(id -g) $HOME/.kube/config
 	e. kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
 	f. kubectl taint nodes --all node-role.kubernetes.io/master-
-	
+	g. pscp pi@192.168.1.125:/home/pi/.kube/config C:\Users\SuKumar\Downloads\pi5.config
+	h. KUBECONFIG=:\Users\SuKumar\Downloads\pi5.config
+	i. https://dl.google.com/dl/cloudsdk/channels/rapid/GoogleCloudSDKInstaller.exe
+
 	To Join nodes
-	
+
 	sudo kubeadm join --token <token> <IPAddress>:6443 --discovery-token-ca-cert-hash <Hash>
 	
 	Help: Find join command
@@ -67,3 +70,9 @@
 	n. kubectl apply -f ./kubernetes/dashboard/dashboard-admin-account.yaml
 	o. kubectl apply -f ./kubernetes/dashboard/internal-ingress.yaml
 	p. kubectl apply -f ./kubernetes/dashboard/external-ingress.yaml
+
+
+Helpfull Commands:
+
+1. kubectl get pods --all-namespaces
+2. kubectl get services --all-namespaces
