@@ -4,13 +4,13 @@
 
 1. Map all domains that will be used for your applications on your computer “hosts” file to nodes: sudo nano /etc/hosts
 
-192.168.1.225 application.internal.mydomain.com
+192.168.1.221 application.internal.mydomain.com
 
-192.168.1.225 dashboard.internal.mydomain.com
-192.168.1.225 dashboard.external.mydomain.com
+192.168.1.222 dashboard.internal.mydomain.com
+192.168.1.221 dashboard.external.mydomain.com
 
-192.168.1.225 traefik.internal.mydomain.com
-192.168.1.225 traefik.external.mydomain.com
+192.168.1.222 traefik.internal.mydomain.com
+192.168.1.221 traefik.external.mydomain.com
 
 
 # Kubernetes Setup
@@ -24,10 +24,12 @@
 	sudo dphys-swapfile swapoff
 	sudo dphys-swapfile uninstall
 	sudo update-rc.d dphys-swapfile remove
+
 	sudo apt purge dphys-swapfile
 	sudo free -m
 6. sudo apt-get install -qy kubeadm
 7. sudo sysctl net.bridge.bridge-nf-call-iptables=1 
+8. sudo apt autoremove
 
 	Master Node Setup
 
@@ -37,7 +39,7 @@
 	d. sudo chown $(id -u):$(id -g) $HOME/.kube/config
 	e. kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
 	f. kubectl taint nodes --all node-role.kubernetes.io/master-
-	g. pscp pi@192.168.1.125:/home/pi/.kube/config C:\Users\SuKumar\Downloads\pi5.config
+	g. pscp pi@192.168.1.121:/home/pi/.kube/config C:\Users\SuKumar\Downloads\pi21.config
 	h. KUBECONFIG=:\Users\SuKumar\Downloads\pi5.config
 	i. https://dl.google.com/dl/cloudsdk/channels/rapid/GoogleCloudSDKInstaller.exe
 
@@ -50,26 +52,18 @@
 	openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt | openssl rsa -pubin -outform der 2>/dev/null | openssl dgst -sha256 -hex | sed 's/^.* //' 
 
 	DashBoard Setup
+	a. kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0-beta1/aio/deploy/recommended.yaml
+	b. kubectl create serviceaccount dashboard -n default
+	c. kubectl create clusterrolebinding dashboard-admin -n default --clusterrole=cluster-admin --serviceaccount=default:dashboard
+	d. kubectl get secret $(kubectl get serviceaccount dashboard -o jsonpath="{.secrets[0].name}") -o jsonpath="{.data.token}" | base64 --decode
+	e. Access at: http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/#/overview?namespace=_all
 
+	LoadBalancer
 	a. sudo apt-get install git
 	b. git clone https://github.com/skumarvlab/kubernetes
 	c. kubectl apply -f https://raw.githubusercontent.com/google/metallb/v0.7.3/manifests/metallb.yaml
-	d. Update IP and apply: kubectl apply -f ./kubernetes/metallb/metallb-conf.yaml
+	d. Update IP to master's IP and apply: kubectl apply -f ./kubernetes/metallb/metallb-conf.yaml
 
-	e. kubectl apply -f ./kubernetes/traefik/internal/traefik-intrenal-rbac.yaml
-	f. kubectl apply -f ./kubernetes/traefik/internal/traefik-internal-configmap.yaml
-	g. Update IP and apply: kubectl apply -f ./kubernetes/traefik/internal/traefik-internal-service.yaml
-	h. kubectl apply -f ./kubernetes/traefik/internal/traefik-internal-deployment.yaml
-
-	i. kubectl apply -f ./kubernetes/traefik/external/external-traefik-rbac.yaml
-	j. kubectl apply -f ./kubernetes/traefik/external/external-traefik-configmap.yaml
-	k. Update IP and apply: kubectl apply -f ./kubernetes/traefik/external/external-traefik-service.yaml
-	l. kubectl apply -f ./kubernetes/traefik/external/external-traefik-deployment.yaml
-
-	m. kubectl apply -f ./kubernetes/dashboard/dashboard.yaml
-	n. kubectl apply -f ./kubernetes/dashboard/dashboard-admin-account.yaml
-	o. kubectl apply -f ./kubernetes/dashboard/internal-ingress.yaml
-	p. kubectl apply -f ./kubernetes/dashboard/external-ingress.yaml
 
 
 Helpfull Commands:
