@@ -70,3 +70,4 @@ Helpfull Commands:
 
 1. kubectl get pods --all-namespaces
 2. kubectl get services --all-namespaces
+3. kubectl proxy 
