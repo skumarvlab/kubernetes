@@ -51,18 +51,22 @@
 	
 	openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt | openssl rsa -pubin -outform der 2>/dev/null | openssl dgst -sha256 -hex | sed 's/^.* //' 
 
+
+	Get Configs
+	a. sudo apt-get install git
+	b. git clone https://github.com/skumarvlab/kubernetes
+
+
 	DashBoard Setup
 	a. kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0-beta1/aio/deploy/recommended.yaml
 	b. kubectl create serviceaccount dashboard -n default
-	c. kubectl create clusterrolebinding dashboard-admin -n default --clusterrole=cluster-admin --serviceaccount=default:dashboard
+	c. kubectl create -f ./kubernetes/dashboard/service-account.yaml
 	d. kubectl get secret $(kubectl get serviceaccount dashboard -o jsonpath="{.secrets[0].name}") -o jsonpath="{.data.token}" | base64 --decode
 	e. Access at: http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/#/overview?namespace=_all
 
 	LoadBalancer
-	a. sudo apt-get install git
-	b. git clone https://github.com/skumarvlab/kubernetes
-	c. kubectl apply -f https://raw.githubusercontent.com/google/metallb/v0.7.3/manifests/metallb.yaml
-	d. Update IP to master's IP and apply: kubectl apply -f ./kubernetes/metallb/metallb-conf.yaml
+	a. kubectl apply -f https://raw.githubusercontent.com/google/metallb/v0.7.3/manifests/metallb.yaml
+	b. Update IP to master's IP and apply: kubectl apply -f ./kubernetes/metallb/metallb-conf.yaml
 
 
 
