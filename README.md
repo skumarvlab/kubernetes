@@ -33,14 +33,14 @@
 
 	Master Node Setup
 
-	a. sudo kubeadm init --apiserver-advertise-address=<IPAddress>
+	a. sudo kubeadm init --token-ttl=0 --apiserver-advertise-address=<IPAddress>|sudo kubeadm init --token-ttl=0 --pod-network-cidr=10.244.0.0/16 --apiserver-advertise-address=<IPAddress>
 	b. mkdir -p $HOME/.kube 
 	c. sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config 
 	d. sudo chown $(id -u):$(id -g) $HOME/.kube/config
-	e. kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
+	e. kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')" | kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
 	f. kubectl taint nodes --all node-role.kubernetes.io/master-
-	g. pscp pi@192.168.1.121:/home/pi/.kube/config C:\Users\SuKumar\Downloads\pi21.config
-	h. KUBECONFIG=:\Users\SuKumar\Downloads\pi5.config
+	g. pscp pi@192.168.1.121:/home/pi/.kube/config E:\skumarvlab\private\Lab\pi21.config
+	h. Create Envirnament Variable KUBECONFIG=E:\skumarvlab\lab\pi21.config
 	i. https://dl.google.com/dl/cloudsdk/channels/rapid/GoogleCloudSDKInstaller.exe
 
 	To Join nodes
@@ -58,20 +58,21 @@
 
 
 	DashBoard Setup
-	a. kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0-beta1/aio/deploy/recommended.yaml
+	a. kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0-beta4/aio/deploy/recommended.yaml
 	b. kubectl create serviceaccount dashboard -n default
 	c. kubectl create -f ./kubernetes/dashboard/service-account.yaml
 	d. kubectl get secret $(kubectl get serviceaccount dashboard -o jsonpath="{.secrets[0].name}") -o jsonpath="{.data.token}" | base64 --decode
 	e. Access at: http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/#/overview?namespace=_all
 
 	LoadBalancer
-	a. kubectl apply -f https://raw.githubusercontent.com/google/metallb/v0.7.3/manifests/metallb.yaml
+	a. kubectl apply -f https://raw.githubusercontent.com/google/metallb/v0.8.1/manifests/metallb.yaml
 	b. Update IP to master's IP and apply: kubectl apply -f ./kubernetes/metallb/metallb-conf.yaml
 
 
 
 Helpfull Commands:
 
-1. kubectl get pods --all-namespaces
-2. kubectl get services --all-namespaces
-3. kubectl proxy 
+1. kubectl get nodes
+2. kubectl get pods --all-namespaces
+3. kubectl get services --all-namespaces
+4. kubectl proxy 
