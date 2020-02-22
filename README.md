@@ -33,13 +33,13 @@
 
 	Master Node Setup
 
-	a. sudo kubeadm init --token-ttl=0 --apiserver-advertise-address=<IPAddress>|sudo kubeadm init --token-ttl=0 --pod-network-cidr=10.244.0.0/16 --apiserver-advertise-address=<IPAddress>
+	a. sudo kubeadm init --token-ttl=0 --apiserver-advertise-address=<IPAddress> | sudo kubeadm init --token-ttl=0 --pod-network-cidr=10.244.0.0/16 --apiserver-advertise-address=<IPAddress>
 	b. mkdir -p $HOME/.kube 
 	c. sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config 
 	d. sudo chown $(id -u):$(id -g) $HOME/.kube/config
 	e. kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')" | kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
 	f. kubectl taint nodes --all node-role.kubernetes.io/master-
-	g. pscp pi@192.168.1.121:/home/pi/.kube/config E:\skumarvlab\private\Lab\pi21.config
+	g. pscp pi@192.168.1.121:/home/pi/.kube/config C:\Private\skumarvlab\private\Lab\pi21.config
 	h. Create Envirnament Variable KUBECONFIG=E:\skumarvlab\lab\pi21.config
 	i. https://dl.google.com/dl/cloudsdk/channels/rapid/GoogleCloudSDKInstaller.exe
 
