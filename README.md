@@ -37,17 +37,11 @@
 	openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt | openssl rsa -pubin -outform der 2>/dev/null | openssl dgst -sha256 -hex | sed 's/^.* //' 
 
 
-	Get Configs
-	a. sudo apt-get install git
-	b. git clone https://github.com/skumarvlab/kubernetes
-
-
 	DashBoard Setup
 	a. kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0-beta8/aio/deploy/recommended.yaml
-	b. kubectl create serviceaccount dashboard -n default
-	c. kubectl create -f https://raw.githubusercontent.com/skumarvlab/kubernetes/master/dashboard/service-account.yaml
-	d. kubectl get secret $(kubectl get serviceaccount dashboard -o jsonpath="{.secrets[0].name}") -o jsonpath="{.data.token}" | base64 --decode
-	e. Access at: http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/#/overview?namespace=_all
+	b. kubectl create -f https://raw.githubusercontent.com/skumarvlab/kubernetes/master/dashboard/service-account.yaml
+	c. kubectl get secret $(kubectl get serviceaccount dashboard -o jsonpath="{.secrets[0].name}") -o jsonpath="{.data.token}" | base64 --decode
+	d. Access at: http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/#/overview?namespace=_all
 
 
 
