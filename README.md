@@ -43,10 +43,21 @@
 	c. kubectl get secret $(kubectl get serviceaccount dashboard -o jsonpath="{.secrets[0].name}") -o jsonpath="{.data.token}" | base64 --decode
 	d. Access at: http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/#/overview?namespace=_all
 
+	MetalLb
+	a. kubectl apply -f  https://raw.githubusercontent.com/skumarvlab/kubernetes/master/metallb/metallb.yaml
+	b. kubectl apply -f https://raw.githubusercontent.com/skumarvlab/kubernetes/master/metallb/metallb-config.yaml
 
+	Helm Setup
+	a. wget https://get.helm.sh/helm-v3.2.0-linux-arm.tar.gz
+	b. tar xvzf helm-v3.2.0-linux-arm.tar.gz
+	c. sudo mv linux-arm/helm /usr/local/bin/helm
+	d. rm -rf linux-arm
+	e. kubectl -n kube-system create serviceaccount tiller && kubectl create clusterrolebinding tiller --clusterrole cluster-admin --serviceaccount=kube-system:tiller && helm init --service-account tiller --tiller-image=jessestuart/tiller:v2.9.1 --override spec.selector.matchLabels.'name'='tiller',spec.selector.matchLabels.'app'='helm' --history-max 10 --output yaml | sed 's@apiVersion: extensions/v1beta1@apiVersion: apps/v1@' | kubectl apply -f -
 
+	Ingress
+	a. kubectl apply -f https://raw.githubusercontent.com/skumarvlab/kubernetes/master/traefik/traefik.yaml
 
-Helpfull Commands:
+Helpful Commands:
 
 1.  kubectl get nodes -o wide
 2.  kubectl get pods -o wide --all-namespaces
