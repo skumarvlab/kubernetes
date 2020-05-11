@@ -4,6 +4,33 @@ kind: ServiceAccount
 metadata:
   name: traefik
   namespace: kube-system
+
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: traefik-files
+  namespace: kube-system
+  labels:
+    type: local
+spec:
+  storageClassName: usbhdd
+  capacity:
+    storage: 10M
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /mnt/usbhdd/traefik
+#  nodeAffinity:
+#    required:
+#      nodeSelectorTerms:
+#      - matchExpressions:
+#        - key: kubernetes.io/hostname
+#          operator: In
+#          values:
+#          - pi21
+
+
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1
@@ -12,15 +39,17 @@ metadata:
   namespace: kube-system
   labels:
     app: traefik
-  #annotations:
-  #  volume.beta.kubernetes.io/storage-class: "mystorage" # use this if used with a custom storage class
+  annotations:
+    volume.beta.kubernetes.io/storage-class: "usbhdd" # use this if used with a custom storage class
 spec:
   accessModes:
     - ReadWriteMany
+  storageClassName: usbhdd
   resources:
     requests:
       storage: 10M
 
+  
 ---
 kind: DaemonSet
 apiVersion: apps/v1
@@ -61,9 +90,9 @@ spec:
         - name: https
           containerPort: 443
           hostPort: 443
-        #volumeMounts:
-        #  - name: traefik-files
-        #    mountPath: /var/lib/traefik
+        volumeMounts:
+          - name: traefik
+            mountPath: /var/lib/traefik
         securityContext:
           capabilities:
             drop:
@@ -77,33 +106,16 @@ spec:
         - --accesslog
         - --entrypoints.web.Address=:80
         #- --entrypoints.web.http.redirections.entryPoint.to=websecure  # enable to redirect all http to https traffic, no middleware needed
-        #- --entrypoints.websecure.Address=:443
-        #- --certificatesResolvers.myresolver.acme.email=admin@email.com # change me to a valid e-mail address
+        - --entrypoints.websecure.Address=:443
+        - --certificatesResolvers.myresolver.acme.email=admin@email.com # change me to a valid e-mail address
         #- --certificatesresolvers.myresolver.acme.storage=/var/lib/traefik/acme.json
         #- --certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory # change to https://acme-v02.api.letsencrypt.org/directory for valid certificates
         #- --certificatesResolvers.myresolver.acme.tlsChallenge=true
-      #volumes:
-      #  - name: traefik-files
-      #    persistentVolumeClaim:
-      #      claimName: traefik-files
-
-      
-# Traefik dashboard Ingress.
----
-apiVersion: traefik.containo.us/v1alpha1
-kind: IngressRoute
-metadata:
-  name: dashboard
-  namespace: kube-system
-spec:
-  entryPoints:
-    - web
-  routes:
-    - match: Host(`traefik.localhost`) && (PathPrefix(`/dashboard`) || PathPrefix(`/api`))
-      kind: Rule
-      services:
-        - name: api@internal
-
+      volumes:
+        - name: traefik
+          emptyDir: {}
+#          persistentVolumeClaim:
+#            claimName: traefik-files
 
 ---
 apiVersion: apiextensions.k8s.io/v1beta1
@@ -125,7 +137,6 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   name: middlewares.traefik.containo.us
-
 spec:
   group: traefik.containo.us
   version: v1alpha1
@@ -133,6 +144,21 @@ spec:
     kind: Middleware
     plural: middlewares
     singular: middleware
+  scope: Namespaced
+
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  name: tlsoptions.traefik.containo.us
+
+spec:
+  group: traefik.containo.us
+  version: v1alpha1
+  names:
+    kind: TLSOption
+    plural: tlsoptions
+    singular: tlsoption
   scope: Namespaced
 
 ---
@@ -150,6 +176,7 @@ spec:
     singular: ingressroutetcp
   scope: Namespaced
 
+
 ---
 apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
@@ -165,20 +192,6 @@ spec:
     singular: ingressrouteudp
   scope: Namespaced
 
----
-apiVersion: apiextensions.k8s.io/v1beta1
-kind: CustomResourceDefinition
-metadata:
-  name: tlsoptions.traefik.containo.us
-
-spec:
-  group: traefik.containo.us
-  version: v1alpha1
-  names:
-    kind: TLSOption
-    plural: tlsoptions
-    singular: tlsoption
-  scope: Namespaced
 
 ---
 apiVersion: apiextensions.k8s.io/v1beta1
@@ -209,6 +222,22 @@ spec:
     plural: traefikservices
     singular: traefikservice
   scope: Namespaced
+      
+# Traefik dashboard Ingress.
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: dashboard
+  namespace: kube-system
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(`traefik.localhost`) && (PathPrefix(`/dashboard`) || PathPrefix(`/api`))
+      kind: Rule
+      services:
+        - name: api@internal
 
 ---
 kind: ClusterRole
